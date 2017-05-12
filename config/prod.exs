@@ -15,7 +15,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :ressipy, Ressipy.Web.Endpoint,
   on_init: {Ressipy.Web.Endpoint, :load_from_system_env, []},
-  url: [host: "ressipy.com", port: 80],
+  url: [host: "ressipy.com"],
   http: [port: {:system, "PORT"}],
   root: ".",
   server: true,
