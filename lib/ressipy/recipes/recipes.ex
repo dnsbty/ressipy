@@ -38,7 +38,7 @@ defmodule Ressipy.Recipes do
   def get_category!(id) do
     Repo.get!(
       from(c in Category,
-        join: r in assoc(c, :recipes),
+        left_join: r in assoc(c, :recipes),
         preload: [recipes: r]
       ),
       id
