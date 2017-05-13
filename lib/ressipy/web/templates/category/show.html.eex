@@ -1,13 +1,13 @@
-<h2>Show Category</h2>
+<h2><%= @category.name %></h2>
 
 <ul>
 
+<%= for recipe <- @category.recipes do %>
   <li>
-    <strong>Name:</strong>
-    <%= @category.name %>
+    <%= link recipe.name, to: recipe_path(@conn, :show, recipe.id) %></span>
   </li>
+<% end %>
 
 </ul>
 
-<span><%= link "Edit", to: category_path(@conn, :edit, @category) %></span>
 <span><%= link "Back", to: category_path(@conn, :index) %></span>

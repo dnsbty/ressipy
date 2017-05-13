@@ -35,7 +35,15 @@ defmodule Ressipy.Recipes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_category!(id), do: Repo.get!(Category, id)
+  def get_category!(id) do
+    Repo.get!(
+      from(c in Category,
+        join: r in assoc(c, :recipes),
+        preload: [recipes: r]
+      ),
+      id
+    )
+  end
 
   @doc """
   Creates a category.
@@ -309,7 +317,7 @@ defmodule Ressipy.Recipes do
   defp recipe_changeset(%Recipe{} = recipe, attrs) do
     recipe
     |> cast(attrs, [:name, :author, :default_image])
-    |> validate_required([:name, :author, :default_image])
+    |> validate_required([:name])
   end
 
   alias Ressipy.Recipes.Instruction

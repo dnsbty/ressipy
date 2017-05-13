@@ -1,10 +1,10 @@
 defmodule Ressipy.Recipes.Ingredient do
   use Ecto.Schema
 
-  schema "recipes_ingredients" do
+  schema "ingredients" do
     field :name, :string
 
-    many_to_many :recipes_recipes, Recipes.Recipe, join_through: "recipes_recipe_ingredients"
+    many_to_many :recipes, Recipes.Recipe, join_through: "recipe_ingredients"
 
     timestamps()
   end

@@ -1,11 +1,11 @@
 defmodule Ressipy.Recipes.Instruction do
   use Ecto.Schema
 
-  schema "recipes_instructions" do
+  schema "instructions" do
     field :order, :integer
     field :text, :string
 
-    belongs_to :recipes_recipes, Recipes.Recipe, foreign_key: :recipe_id
+    belongs_to :recipes, Recipes.Recipe
 
     timestamps()
   end

@@ -25,7 +25,7 @@ defmodule Ressipy.Web.CategoryController do
   end
 
   def show(conn, %{"id" => id}) do
-    category = Recipes.get_category!(id)
+    category = Recipes.get_category!(id) |> IO.inspect
     render(conn, "show.html", category: category)
   end
 
