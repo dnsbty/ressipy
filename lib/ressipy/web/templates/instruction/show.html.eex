@@ -1,0 +1,18 @@
+<h2>Show Instruction</h2>
+
+<ul>
+
+  <li>
+    <strong>Order:</strong>
+    <%= @instruction.order %>
+  </li>
+
+  <li>
+    <strong>Text:</strong>
+    <%= @instruction.text %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: instruction_path(@conn, :edit, @instruction) %></span>
+<span><%= link "Back", to: instruction_path(@conn, :index) %></span>
