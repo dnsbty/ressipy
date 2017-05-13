@@ -19,6 +19,7 @@ defmodule Ressipy.Web.Router do
     get "/", PageController, :index
     resources "/categories", CategoryController
     resources "/ingredients", IngredientController
+    resources "/recipes", RecipeController
   end
 
   # Other scopes may use custom stacks.
