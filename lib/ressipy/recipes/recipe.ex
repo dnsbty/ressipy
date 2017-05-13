@@ -6,6 +6,7 @@ defmodule Ressipy.Recipes.Recipe do
     field :default_image, :string
     field :name, :string
     field :category_id, :id
+    has_many :recipes_ingredients, Ingredient
 
     timestamps()
   end
