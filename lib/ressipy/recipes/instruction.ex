@@ -4,8 +4,8 @@ defmodule Ressipy.Recipes.Instruction do
   schema "recipes_instructions" do
     field :order, :integer
     field :text, :string
-    field :recipe_id, :id
-    belongs_to :recipes_recipes, Recipes.Recipe, define_field: false
+
+    belongs_to :recipes_recipes, Recipes.Recipe, foreign_key: :recipe_id
 
     timestamps()
   end
