@@ -10,10 +10,13 @@ defmodule Ressipy.Web.RecipeController do
 
   def new(conn, params) do
     categories = Recipes.list_categories()
-    changeset = Recipes.change_recipe(
-      %Ressipy.Recipes.Recipe{},
-      %{category_id: params["category"]}
-    )
+    changeset =
+      %Ressipy.Recipes.Recipe{
+        category_id: params["category"],
+        ingredients: [%Ressipy.Recipes.RecipeIngredient{order: 1}],
+        instructions: [%Ressipy.Recipes.Instruction{order: 1}]
+      } |> Recipes.change_recipe
+    IO.inspect(changeset.data)
     render(conn, "new.html", changeset: changeset, categories: categories)
   end
 

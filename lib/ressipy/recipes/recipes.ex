@@ -208,8 +208,8 @@ defmodule Ressipy.Recipes do
       %Ecto.Changeset{source: %Ingredient{}}
 
   """
-  def change_ingredient(%Ingredient{} = ingredient) do
-    ingredient_changeset(ingredient, %{})
+  def change_ingredient(%Ingredient{} = ingredient, attrs) do
+    ingredient_changeset(ingredient, attrs)
   end
 
   defp ingredient_changeset(%Ingredient{} = ingredient, attrs) do
@@ -218,8 +218,29 @@ defmodule Ressipy.Recipes do
     |> validate_required([:name])
   end
 
-  alias Ressipy.Recipes.Recipe
   alias Ressipy.Recipes.RecipeIngredient
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking recipe ingredient changes.
+
+  ## Examples
+
+      iex> change_ingredients(ingredient)
+      %Ecto.Changeset{source: %Ingredient{}}
+
+  """
+  def change_recipe_ingredient(%RecipeIngredient{} = ingredient, attrs) do
+    recipe_ingredient_changeset(ingredient, attrs)
+  end
+
+  defp recipe_ingredient_changeset(%RecipeIngredient{} = ingredient, attrs) do
+    ingredient
+    |> cast(attrs, [:amount, :order])
+    |> cast_assoc(:ingredient, required: true, with: &Ressipy.Recipes.change_ingredient/2)
+    |> validate_required([:amount])
+  end
+
+  alias Ressipy.Recipes.Recipe
 
   @doc """
   Returns the list of recipes.
@@ -330,6 +351,8 @@ defmodule Ressipy.Recipes do
   defp recipe_changeset(%Recipe{} = recipe, attrs) do
     recipe
     |> cast(attrs, [:name, :author, :default_image])
+    |> cast_assoc(:instructions, required: true, with: &Ressipy.Recipes.change_instruction/2)
+    |> cast_assoc(:ingredients, required: true, with: &Ressipy.Recipes.change_recipe_ingredient/2)
     |> validate_required([:name])
   end
 
@@ -426,7 +449,10 @@ defmodule Ressipy.Recipes do
 
   """
   def change_instruction(%Instruction{} = instruction) do
-    instruction_changeset(instruction, %{})
+    change_instruction(instruction, %{})
+  end
+  def change_instruction(%Instruction{} = instruction, attrs) do
+    instruction_changeset(instruction, attrs)
   end
 
   defp instruction_changeset(%Instruction{} = instruction, attrs) do
