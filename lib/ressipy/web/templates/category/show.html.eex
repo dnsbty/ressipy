@@ -27,4 +27,5 @@
   </tbody>
 </table>
 
+<span><%= link "New Recipe", to: recipe_path(@conn, :new, category: @category) %></span>
 <span><%= link "Back", to: category_path(@conn, :index) %></span>

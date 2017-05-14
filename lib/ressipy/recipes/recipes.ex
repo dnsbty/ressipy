@@ -323,8 +323,8 @@ defmodule Ressipy.Recipes do
       %Ecto.Changeset{source: %Recipe{}}
 
   """
-  def change_recipe(%Recipe{} = recipe) do
-    recipe_changeset(recipe, %{})
+  def change_recipe(%Recipe{} = recipe, attrs \\ %{}) do
+    recipe_changeset(recipe, attrs)
   end
 
   defp recipe_changeset(%Recipe{} = recipe, attrs) do
