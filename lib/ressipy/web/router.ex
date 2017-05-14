@@ -23,6 +23,14 @@ defmodule Ressipy.Web.Router do
     resources "/instructions", InstructionController
   end
 
+  scope "/auth", Ressipy.Web do
+    pipe_through :browser
+
+    get "/facebook", AuthController, :request
+    get "/facebook/callback", AuthController, :callback
+    delete "/logout", AuthController, :delete
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", Ressipy.Web do
   #   pipe_through :api

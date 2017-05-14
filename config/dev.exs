@@ -56,3 +56,10 @@ config :ressipy, Ressipy.Repo,
   database: "ressipy_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Configure Ueberauth
+config :ueberauth, Ueberauth,
+  providers: [facebook: {Ueberauth.Strategy.Facebook, []}]
+
+# Configure Facebook client credentials
+import_config "#{Mix.env}.secret.exs"

@@ -36,7 +36,9 @@ defmodule Ressipy.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:distillery, "~> 1.0"}]
+     {:distillery, "~> 1.0"},
+     {:ueberauth, "~> 0.4.0"},
+     {:ueberauth_facebook, "~> 0.6.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
