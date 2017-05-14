@@ -1,26 +1,9 @@
-<h2>Listing Categories</h2>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<ul class="categories">
 <%= for category <- @categories do %>
-    <tr>
-      <td><%= category.name %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: category_path(@conn, :show, category), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: category_path(@conn, :edit, category), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: category_path(@conn, :delete, category), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
+  <li>
+    <%= link category.name, to: category_path(@conn, :show, category) %>
+  </li>
 <% end %>
-  </tbody>
-</table>
+</ul>
 
-<span><%= link "New Category", to: category_path(@conn, :new) %></span>
+<%= link "New Category", to: category_path(@conn, :new), class: "btn btn-default btn-new" %>

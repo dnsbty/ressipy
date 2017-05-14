@@ -18,7 +18,10 @@ defmodule Ressipy.Recipes do
 
   """
   def list_categories do
-    Repo.all(Category)
+    Repo.all(
+      from c in Category,
+        order_by: c.name
+    )
   end
 
   @doc """
@@ -35,7 +38,16 @@ defmodule Ressipy.Recipes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_category!(id), do: Repo.get!(Category, id)
+  def get_category!(id) do
+    Repo.get!(
+      from(c in Category,
+        left_join: r in assoc(c, :recipes),
+        preload: [recipes: r],
+        order_by: r.name
+      ),
+      id
+    )
+  end
 
   @doc """
   Creates a category.
@@ -201,13 +213,38 @@ defmodule Ressipy.Recipes do
 
   """
   def change_ingredient(%Ingredient{} = ingredient) do
-    ingredient_changeset(ingredient, %{})
+    change_ingredient(ingredient, %{})
+  end
+  def change_ingredient(%Ingredient{} = ingredient, attrs) do
+    ingredient_changeset(ingredient, attrs)
   end
 
   defp ingredient_changeset(%Ingredient{} = ingredient, attrs) do
     ingredient
     |> cast(attrs, [:name])
     |> validate_required([:name])
+  end
+
+  alias Ressipy.Recipes.RecipeIngredient
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking recipe ingredient changes.
+
+  ## Examples
+
+      iex> change_ingredients(ingredient)
+      %Ecto.Changeset{source: %Ingredient{}}
+
+  """
+  def change_recipe_ingredient(%RecipeIngredient{} = ingredient, attrs) do
+    recipe_ingredient_changeset(ingredient, attrs)
+  end
+
+  defp recipe_ingredient_changeset(%RecipeIngredient{} = ingredient, attrs) do
+    ingredient
+    |> cast(attrs, [:amount, :order])
+    |> cast_assoc(:ingredient, required: true, with: &Ressipy.Recipes.change_ingredient/2)
+    |> validate_required([:amount])
   end
 
   alias Ressipy.Recipes.Recipe
@@ -222,7 +259,13 @@ defmodule Ressipy.Recipes do
 
   """
   def list_recipes do
-    Repo.all(Recipe)
+    Repo.all(
+      from(r in Recipe,
+        left_join: c in assoc(r, :category),
+        preload: [category: c],
+        order_by: r.name
+      )
+    )
   end
 
   @doc """
@@ -239,7 +282,23 @@ defmodule Ressipy.Recipes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_recipe!(id), do: Repo.get!(Recipe, id)
+  def get_recipe!(id) do
+    Repo.get!(
+      from(r in Recipe,
+        left_join: c in assoc(r, :category),
+        left_join: s in assoc(r, :instructions),
+        left_join: j in assoc(r, :ingredients),
+        left_join: g in assoc(j, :ingredient),
+        preload: [
+          category: c,
+          ingredients: {j, ingredient: g},
+          instructions: s
+        ],
+        order_by: [j.order, s.order]
+      ),
+      id
+    )
+  end
 
   @doc """
   Creates a recipe.
@@ -302,14 +361,16 @@ defmodule Ressipy.Recipes do
       %Ecto.Changeset{source: %Recipe{}}
 
   """
-  def change_recipe(%Recipe{} = recipe) do
-    recipe_changeset(recipe, %{})
+  def change_recipe(%Recipe{} = recipe, attrs \\ %{}) do
+    recipe_changeset(recipe, attrs)
   end
 
   defp recipe_changeset(%Recipe{} = recipe, attrs) do
     recipe
-    |> cast(attrs, [:name, :author, :default_image])
-    |> validate_required([:name, :author, :default_image])
+    |> cast(attrs, [:name, :author, :default_image, :category_id])
+    |> cast_assoc(:instructions, required: true, with: &Ressipy.Recipes.change_instruction/2)
+    |> cast_assoc(:ingredients, required: true, with: &Ressipy.Recipes.change_recipe_ingredient/2)
+    |> validate_required([:name, :category_id])
   end
 
   alias Ressipy.Recipes.Instruction
@@ -405,7 +466,10 @@ defmodule Ressipy.Recipes do
 
   """
   def change_instruction(%Instruction{} = instruction) do
-    instruction_changeset(instruction, %{})
+    change_instruction(instruction, %{})
+  end
+  def change_instruction(%Instruction{} = instruction, attrs) do
+    instruction_changeset(instruction, attrs)
   end
 
   defp instruction_changeset(%Instruction{} = instruction, attrs) do
