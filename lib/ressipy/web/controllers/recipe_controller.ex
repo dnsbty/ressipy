@@ -13,10 +13,12 @@ defmodule Ressipy.Web.RecipeController do
     changeset =
       %Ressipy.Recipes.Recipe{
         category_id: params["category"],
-        ingredients: [%Ressipy.Recipes.RecipeIngredient{order: 1}],
+        ingredients: [%Ressipy.Recipes.RecipeIngredient{
+          order: 1,
+          ingredient: %Ressipy.Recipes.Ingredient{}
+        }],
         instructions: [%Ressipy.Recipes.Instruction{order: 1}]
       } |> Recipes.change_recipe
-    IO.inspect(changeset.data)
     render(conn, "new.html", changeset: changeset, categories: categories)
   end
 
@@ -27,6 +29,7 @@ defmodule Ressipy.Web.RecipeController do
         |> put_flash(:info, "Recipe created successfully.")
         |> redirect(to: recipe_path(conn, :show, recipe))
       {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset)
         categories = Recipes.list_categories()
         render(conn, "new.html", changeset: changeset, categories: categories)
     end

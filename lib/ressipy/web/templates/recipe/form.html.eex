@@ -30,33 +30,42 @@
   </div>
 
   <h3>Ingredients</h3>
-  <%= inputs_for f, :ingredients, fn j -> %>
-    <div class="row">
-      <div class="form-group col-xs-3">
-        <%= label j, :amount, class: "control-label" %>
-        <%= text_input j, :amount, class: "form-control" %>
-        <%= error_tag j, :amount %>
+  <div id="ingredientsContainer">
+    <%= inputs_for f, :ingredients, fn j -> %>
+      <div class="row" data-ingredient="<%= j.index %>">
+        <div class="form-group col-xs-3">
+          <%= label j, :amount, class: "control-label" %>
+          <%= text_input j, :amount, class: "form-control" %>
+          <%= error_tag j, :amount %>
+        </div>
+        <%= inputs_for j, :ingredient, fn g -> %>
+        <div class="form-group col-xs-9">
+          <%= hidden_input g, :id %>
+          <%= label g, :name, class: "control-label" %>
+          <%= text_input g, :name, class: "form-control" %>
+          <%= error_tag g, :name %>
+        </div>
+        <% end %>
       </div>
-      <%= inputs_for j, :ingredient, fn g -> %>
-      <div class="form-group col-xs-9">
-        <%= label g, :name, class: "control-label" %>
-        <%= text_input g, :name, class: "form-control" %>
-        <%= error_tag g, :name %>
-      </div>
-      <% end %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+  <span><a class="btn btn-default" onclick="Recipe.addIngredient()">Add Ingredient</a></span>
 
   <h3>Instructions</h3>
-  <%= inputs_for f, :instructions, fn s -> %>
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-addon"><%= s.data.order %></span>
-        <%= text_input s, :text, class: "form-control" %>
+  <div id="instructionsContainer">
+    <%= inputs_for f, :instructions, fn s -> %>
+      <div class="form-group">
+        <%= hidden_input s, :id %>
+        <%= hidden_input s, :order, value: s.index + 1 %>
+        <div class="input-group">
+          <span class="input-group-addon"><%= s.index + 1 %></span>
+          <%= text_input s, :text, class: "form-control" %>
+        </div>
+        <%= error_tag s, :text %>
       </div>
-      <%= error_tag s, :text %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+  <span><a class="btn btn-default" onclick="Recipe.addInstruction()">Add Step</a></span>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
