@@ -21,6 +21,8 @@ defmodule Ressipy.Web.Router do
     resources "/ingredients", IngredientController
     resources "/recipes", RecipeController
     resources "/instructions", InstructionController
+    resources "/roles", RoleController
+    resources "/users", UserController
   end
 
   scope "/auth", Ressipy.Web do
