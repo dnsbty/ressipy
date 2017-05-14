@@ -22,13 +22,6 @@ defmodule Ressipy.Web.AuthController do
     |> redirect(to: "/")
   end
 
-  def delete(conn, _params) do
-    conn
-    |> put_flash(:info, "You have been logged out!")
-    |> configure_session(drop: true)
-    |> redirect(to: "/")
-  end
-
   defp create_user(%{uid: facebook_id, info: %{name: name}}) do
     role_name = Application.get_env(:ressipy, :default_role)
     role_id = case Repo.all from role in Role, where: role.name == ^role_name do
@@ -39,8 +32,17 @@ defmodule Ressipy.Web.AuthController do
     |> Accounts.create_user
   end
 
+  def delete(conn, _params) do
+    conn
+    |> put_flash(:info, "You have been logged out!")
+    |> configure_session(drop: true)
+    |> redirect(to: "/")
+  end
+
   defp find_user(auth) do
-    case Repo.all from user in User, where: user.facebook_id == ^auth.uid do
+    case Repo.all from user in User,
+      where: user.facebook_id == ^auth.uid,
+      preload: [:role] do
       [%User{} = user | _] -> user
       _ -> nil
     end
@@ -52,8 +54,8 @@ defmodule Ressipy.Web.AuthController do
         user
       _ ->
         case create_user(auth) do
-          {:ok, %User{} = user} ->
-            user
+          {:ok, %User{}} ->
+            put_user(conn, auth)
           {:error, %Ecto.Changeset{} = changeset} ->
             IO.inspect changeset
             raise "Could not create user"

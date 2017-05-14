@@ -16,7 +16,18 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+            <%# <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li> %>
+            <% user = Plug.Conn.get_session @conn, :current_user %>
+            <%= if user do %>
+              Signed in as <%= user.name %>
+              <br>
+              <%= link "Logout", to: auth_path(@conn, :delete), method: :delete, class: "btn btn-danger" %>
+            <% else %>
+              <a class="btn btn-primary" href="/auth/facebook">
+                <i class="fa fa-facebook"></i>
+                Sign in with Facebook
+              </a>
+            <% end %>
           </ul>
         </nav>
         <span class="logo"></span>

@@ -13,6 +13,10 @@ defmodule Ressipy.Web.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug Ressipy.Web.Plugs.Auth, ["admin"]
+  end
+
   scope "/", Ressipy.Web do
     pipe_through :browser # Use the default browser stack
 
