@@ -4,4 +4,4 @@
                         categories: @categories,
                         action: recipe_path(@conn, :create) %>
 
-<span><%= link "Back", to: recipe_path(@conn, :index) %></span>
+<span><%= link "Back", to: category_path(@conn, :show, @changeset.data.category_id) %></span>

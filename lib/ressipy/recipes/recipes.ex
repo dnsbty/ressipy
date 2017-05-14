@@ -18,7 +18,10 @@ defmodule Ressipy.Recipes do
 
   """
   def list_categories do
-    Repo.all(Category)
+    Repo.all(
+      from c in Category,
+        order_by: c.name
+    )
   end
 
   @doc """
@@ -282,10 +285,15 @@ defmodule Ressipy.Recipes do
   def get_recipe!(id) do
     Repo.get!(
       from(r in Recipe,
+        left_join: c in assoc(r, :category),
         left_join: s in assoc(r, :instructions),
         left_join: j in assoc(r, :ingredients),
         left_join: g in assoc(j, :ingredient),
-        preload: [ingredients: {j, ingredient: g}, instructions: s],
+        preload: [
+          category: c,
+          ingredients: {j, ingredient: g},
+          instructions: s
+        ],
         order_by: [j.order, s.order]
       ),
       id

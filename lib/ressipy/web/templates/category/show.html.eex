@@ -1,29 +1,15 @@
-<h2><%= @category.name %></h2>
+<h2 class="title"><%= link "Categories", to: category_path(@conn, :index) %> &gt; <%= @category.name %></h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Author</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<ul class="recipes">
 <%= for recipe <- @category.recipes do %>
-    <tr>
-      <td><%= recipe.name %></td>
-      <td><%= recipe.author %></td>
-
-      <td class="text-right">
-        <span><%= link "Show", to: recipe_path(@conn, :show, recipe), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: recipe_path(@conn, :edit, recipe), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: recipe_path(@conn, :delete, recipe), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
+  <li>
+    <%= link recipe.name, to: recipe_path(@conn, :show, recipe) %>
+    <div class="recipe-actions">
+      <span><%= link "Edit", to: recipe_path(@conn, :edit, recipe), class: "btn btn-default btn-xs" %></span>
+      <span><%= link "Delete", to: recipe_path(@conn, :delete, recipe), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+    </div>
+  </li>
 <% end %>
-  </tbody>
-</table>
+</ul>
 
-<span><%= link "New Recipe", to: recipe_path(@conn, :new, category: @category) %></span>
-<span><%= link "Back", to: category_path(@conn, :index) %></span>
+<%= link "New Recipe", to: recipe_path(@conn, :new, category: @category), class: "btn btn-default btn-new" %>
