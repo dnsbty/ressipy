@@ -219,6 +219,7 @@ defmodule Ressipy.Recipes do
   end
 
   alias Ressipy.Recipes.Recipe
+  alias Ressipy.Recipes.RecipeIngredient
 
   @doc """
   Returns the list of recipes.
@@ -247,7 +248,18 @@ defmodule Ressipy.Recipes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_recipe!(id), do: Repo.get!(Recipe, id)
+  def get_recipe!(id) do
+
+    Repo.get!(
+      from(r in Recipe,
+        left_join: s in assoc(r, :instructions),
+        left_join: j in assoc(r, :ingredients),
+        left_join: g in assoc(j, :ingredient),
+        preload: [ingredients: {j, ingredient: g}, instructions: s]
+      ),
+      id
+    ) |> IO.inspect
+  end
 
   @doc """
   Creates a recipe.

@@ -5,7 +5,7 @@ defmodule Ressipy.Recipes.Instruction do
     field :order, :integer
     field :text, :string
 
-    belongs_to :recipes, Recipes.Recipe
+    belongs_to :recipe, Recipes.Recipe
 
     timestamps()
   end

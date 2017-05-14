@@ -9,7 +9,7 @@ defmodule Ressipy.Recipes.Recipe do
 
     belongs_to :category, Recipes.Category, foreign_key: :category_id
     has_many :instructions, Recipes.Instruction
-    many_to_many :ingredients, Recipes.Ingredient, join_through: "recipe_ingredients"
+    has_many :ingredients, Recipes.RecipeIngredient
 
     timestamps()
   end
