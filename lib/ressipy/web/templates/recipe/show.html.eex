@@ -13,10 +13,22 @@
   </li>
 
   <li>
-    <strong>Default image:</strong>
-    <%= @recipe.default_image %>
+    <strong>Ingredients:</strong>
+    <ul>
+<%= for ingredient <- @recipe.ingredients do %>
+      <li><%= ingredient.amount %> <%= ingredient.ingredient.name %></li>
+<% end %>
+    </ul>
   </li>
 
+  <li>
+    <strong>Instructions:</strong>
+    <ol>
+<%= for step <- @recipe.instructions do %>
+      <li><%= step.text %></li>
+<% end %>
+    </ol>
+  </li>
 </ul>
 
 <span><%= link "Edit", to: recipe_path(@conn, :edit, @recipe) %></span>

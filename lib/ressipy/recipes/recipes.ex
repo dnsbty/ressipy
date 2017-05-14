@@ -255,7 +255,8 @@ defmodule Ressipy.Recipes do
         left_join: s in assoc(r, :instructions),
         left_join: j in assoc(r, :ingredients),
         left_join: g in assoc(j, :ingredient),
-        preload: [ingredients: {j, ingredient: g}, instructions: s]
+        preload: [ingredients: {j, ingredient: g}, instructions: s],
+        order_by: [j.order, s.order]
       ),
       id
     ) |> IO.inspect

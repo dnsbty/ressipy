@@ -1,5 +1,6 @@
 defmodule Ressipy.Recipes.Ingredient do
   use Ecto.Schema
+  alias Ressipy.Recipes
 
   schema "ingredients" do
     field :name, :string
