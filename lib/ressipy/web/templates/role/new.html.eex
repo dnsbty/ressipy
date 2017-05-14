@@ -1,0 +1,6 @@
+<h2>New Role</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: role_path(@conn, :create) %>
+
+<span><%= link "Back", to: role_path(@conn, :index) %></span>
