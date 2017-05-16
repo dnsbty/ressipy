@@ -1,0 +1,31 @@
+/* Styles for the categories page */
+
+ul.recipes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 1.4em;
+}
+
+ul.recipes > li {
+  border-bottom: 1px solid #eee;
+}
+
+ul.recipes > li:hover {
+  background-color: #fafafa;
+}
+
+ul.recipes > li > a {
+  display: block;
+  width: 100%;
+  padding: 1em 0;
+}
+
+ul.recipes > li > a {
+  text-decoration: none;
+}
+
+ul.recipes > li > div.recipe-actions {
+  float: right;
+  margin-top: -2.45em;
+}

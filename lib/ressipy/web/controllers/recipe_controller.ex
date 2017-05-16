@@ -8,9 +8,18 @@ defmodule Ressipy.Web.RecipeController do
     render(conn, "index.html", recipes: recipes)
   end
 
-  def new(conn, _params) do
-    changeset = Recipes.change_recipe(%Ressipy.Recipes.Recipe{})
-    render(conn, "new.html", changeset: changeset)
+  def new(conn, params) do
+    categories = Recipes.list_categories()
+    changeset =
+      %Ressipy.Recipes.Recipe{
+        category_id: params["category"],
+        ingredients: [%Ressipy.Recipes.RecipeIngredient{
+          order: 1,
+          ingredient: %Ressipy.Recipes.Ingredient{}
+        }],
+        instructions: [%Ressipy.Recipes.Instruction{order: 1}]
+      } |> Recipes.change_recipe
+    render(conn, "new.html", changeset: changeset, categories: categories)
   end
 
   def create(conn, %{"recipe" => recipe_params}) do
@@ -20,7 +29,9 @@ defmodule Ressipy.Web.RecipeController do
         |> put_flash(:info, "Recipe created successfully.")
         |> redirect(to: recipe_path(conn, :show, recipe))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        IO.inspect(changeset)
+        categories = Recipes.list_categories()
+        render(conn, "new.html", changeset: changeset, categories: categories)
     end
   end
 
@@ -31,8 +42,9 @@ defmodule Ressipy.Web.RecipeController do
 
   def edit(conn, %{"id" => id}) do
     recipe = Recipes.get_recipe!(id)
+    categories = Recipes.list_categories()
     changeset = Recipes.change_recipe(recipe)
-    render(conn, "edit.html", recipe: recipe, changeset: changeset)
+    render(conn, "edit.html", recipe: recipe, categories: categories, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "recipe" => recipe_params}) do

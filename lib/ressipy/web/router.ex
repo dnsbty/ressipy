@@ -20,7 +20,7 @@ defmodule Ressipy.Web.Router do
   scope "/", Ressipy.Web do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", CategoryController, :index
     resources "/categories", CategoryController
     resources "/ingredients", IngredientController
     resources "/recipes", RecipeController

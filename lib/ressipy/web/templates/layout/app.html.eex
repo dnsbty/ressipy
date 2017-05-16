@@ -3,15 +3,30 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1.0,minimum-scale=1.0" media="(device-height: 568px)">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Ressipy!</title>
+    <title>Ressipy</title>
+    <meta property="og:title" content="Ressipy">
+    <meta property="og:site_name" content="Ressipy">
+    <meta property="og:description" content="Find and share family recipes you love.">
+    <link id="canonicalUrl" rel="canonical" href="https://ressipy.com">
+    <meta property="og:url" content="https://ressipy.com/">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
+    <header class="header">
+      <div class="container">
+        <h1 class="logo">
+          <%= link "Ressipy", to: category_path(@conn, :index) %>
+        </h1>
+      </div>
+    </header>
     <div class="container">
       <header class="header">
         <nav role="navigation">
@@ -32,7 +47,6 @@
         </nav>
         <span class="logo"></span>
       </header>
-
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
