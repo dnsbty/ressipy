@@ -207,7 +207,7 @@ defmodule Ressipy.Accounts do
   defp user_changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:facebook_id, :name, :role_id])
-    |> validate_required([:facebook_id, :name, :role_id])
+    |> validate_required([:facebook_id, :name])
     |> unique_constraint(:facebook_id)
   end
 end

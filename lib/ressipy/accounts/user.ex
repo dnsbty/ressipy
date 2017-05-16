@@ -2,7 +2,7 @@ defmodule Ressipy.Accounts.User do
   use Ecto.Schema
   alias Ressipy.Accounts
 
-  schema "accounts_users" do
+  schema "users" do
     field :facebook_id, :string
     field :name, :string
 

@@ -3,10 +3,9 @@ defmodule Ressipy.Web.AuthController do
   plug Ueberauth
 
   import Ecto.Query, only: [from: 2]
-  alias Ressipy.Accounts
-  alias Ressipy.Accounts.Role
-  alias Ressipy.Accounts.User
-  alias Ressipy.Repo
+  require Logger
+  alias Ressipy.{Accounts, Repo}
+  alias Accounts.{User}
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
@@ -22,14 +21,13 @@ defmodule Ressipy.Web.AuthController do
     |> redirect(to: "/")
   end
 
-  defp create_user(%{uid: facebook_id, info: %{name: name}}) do
-    role_name = Application.get_env(:ressipy, :default_role)
-    role_id = case Repo.all from role in Role, where: role.name == ^role_name do
-      [%Role{id: id} | _] -> id
-      _ -> raise "Could not find a role named #{role_name}"
-    end
-    %{name: name, facebook_id: facebook_id, role_id: role_id}
+  defp create_user_if_needed(nil, %{uid: facebook_id, info: %{name: name}}) do
+    %{name: name, facebook_id: facebook_id}
     |> Accounts.create_user
+  end
+
+  defp create_user_if_needed(%User{} = user, _) do
+    {:ok, user}
   end
 
   def delete(conn, _params) do
@@ -39,29 +37,22 @@ defmodule Ressipy.Web.AuthController do
     |> redirect(to: "/")
   end
 
-  defp find_user(auth) do
-    case Repo.all from user in User,
-      where: user.facebook_id == ^auth.uid,
-      preload: [:role] do
-      [%User{} = user | _] -> user
-      _ -> nil
-    end
+  defp find_user(%Ueberauth.Auth{uid: facebook_id}) do
+    Repo.one from u in User,
+      where: u.facebook_id == ^facebook_id,
+      preload: :role,
+      limit: 1
   end
 
   defp put_user(conn, auth) do
-    user = case find_user(auth) do
-      %User{} = user ->
-        user
+    case auth |> find_user |> create_user_if_needed(auth) do
+      {:ok, user} ->
+        conn
+        |> put_session(:current_user, user)
       _ ->
-        case create_user(auth) do
-          {:ok, %User{}} ->
-            put_user(conn, auth)
-          {:error, %Ecto.Changeset{} = changeset} ->
-            IO.inspect changeset
-            raise "Could not create user"
-        end
+        Logger.error "User couldn't be created"
+        conn
+        |> put_flash(:error, "Could not create an account at the moment")
     end
-    conn
-    |> put_session(:current_user, user)
   end
 end

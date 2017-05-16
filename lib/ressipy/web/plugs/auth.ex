@@ -2,8 +2,7 @@ defmodule Ressipy.Web.Plugs.Auth do
   import Phoenix.Controller, only: [put_flash: 3, redirect: 2]
   import Plug.Conn
 
-  alias Ressipy.Accounts.Role
-  alias Ressipy.Accounts.User
+  alias Ressipy.Accounts.{Role, User}
 
   def init(roles_with_access), do: roles_with_access
 
