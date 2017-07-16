@@ -1,7 +1,7 @@
 # Ressipy
 ![giphy](https://cloud.githubusercontent.com/assets/3421625/26032462/af147ec8-3851-11e7-886d-87cfb69f6ad0.gif)
 
-A simple recipe organizer written on Elixir 1.4 and Phoenix 1.3.
+A simple recipe organizer written on Elixir 1.4 and Phoenix 1.3. Pull requests welcome.
 
 ## Getting started
   * Install dependencies with `mix deps.get`
