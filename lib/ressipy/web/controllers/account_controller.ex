@@ -29,6 +29,7 @@ defmodule Ressipy.Web.AccountController do
     with {:ok, user} <- Accounts.verify_phone(code) do
       conn
       |> put_session(:user_id, user.id)
+      |> put_flash(:info, "Welcome, #{user.first_name}!")
       |> redirect(to: category_path(conn, :index))
     else
       {:not_found, changeset} ->
