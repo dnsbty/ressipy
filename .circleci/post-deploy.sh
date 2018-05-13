@@ -7,6 +7,9 @@ ssh $APP_USER@$APP_HOST <<ENDSSH
   echo "stopping app";
   ./bin/$APP_NAME stop;
 
+  echo "running migrations";
+  ./bin/$APP_NAME migrate;
+
   echo "starting app";
   ./bin/$APP_NAME start;
 

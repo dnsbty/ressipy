@@ -41,6 +41,13 @@ end
 release :ressipy do
   set version: current_version(:ressipy)
   set applications: [
+    :parse_trans,
     :runtime_tools
+  ]
+
+  set commands: [
+    "seed": "rel/commands/seed.sh",
+    "migrate": "rel/commands/migrate.sh",
+    "rollback": "rel/commands/rollback.sh",
   ]
 end

@@ -3,8 +3,6 @@ defmodule MessageBird do
   Interacts with the MessageBird API to send SMS messages.
   """
 
-  @originator "+12016227284"
-
   @spec send_message(phone_number :: String.t, message :: String.t) ::
     {:ok, HTTPoison.Response.t() | HTTPoison.AsyncResponse.t()} |
     {:error, HTTPoison.Error.t()}
@@ -13,7 +11,7 @@ defmodule MessageBird do
     headers = [{"Authorization", "AccessKey #{access_key()}"}]
     body = %{
       recipients: phone_number,
-      originator: @originator,
+      originator: originator(),
       body: message
     }
     encoded_body = Poison.encode!(body)
