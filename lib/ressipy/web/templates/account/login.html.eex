@@ -6,7 +6,7 @@
     <%= error_tag f, :number %>
   </div>
 
-  <%= submit "Invite", class: "btn btn-primary btn-block" %>
+  <%= submit "Log In", class: "btn btn-primary btn-block" %>
 <% end %>
 
 <script type="text/javascript">
