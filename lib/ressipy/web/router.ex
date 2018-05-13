@@ -9,25 +9,17 @@ defmodule Ressipy.Web.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", Ressipy.Web do
     pipe_through :browser # Use the default browser stack
 
     get "/", CategoryController, :index
     get "/login", AccountController, :index
     post "/login", AccountController, :login
+    get "/logout", AccountController, :logout
     post "/verify", AccountController, :verify
     resources "/categories", CategoryController
     resources "/ingredients", IngredientController
     resources "/recipes", RecipeController
     resources "/instructions", InstructionController
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", Ressipy.Web do
-  #   pipe_through :api
-  # end
 end

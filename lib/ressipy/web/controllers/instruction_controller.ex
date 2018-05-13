@@ -3,6 +3,8 @@ defmodule Ressipy.Web.InstructionController do
 
   alias Ressipy.Recipes
 
+  plug Ressipy.Web.Plugs.EnsureAuthenticated when not action in [:index, :show]
+
   def index(conn, _params) do
     instructions = Recipes.list_instructions()
     render(conn, "index.html", instructions: instructions)

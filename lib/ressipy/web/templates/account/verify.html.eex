@@ -1,11 +1,13 @@
 <h1>Verify your Identity</h1>
 <p>I just sent you a text with a 6-digit code. Enter the code when you receive it</p>
 <%= form_for @changeset, account_path(@conn, :verify), fn f -> %>
-  <label>
-    Code <%= text_input f, :code %>
-  </label>
+  <div class="form-group">
+    <%= label f, :code, "Code", class: "control-label" %>
+    <%= telephone_input f, :code, id: "code", class: "form-control", novalidate: true %>
+    <%= error_tag f, :code %>
+  </div>
 
   <%= hidden_input f, :number %>
 
-  <%= submit "Start" %>
+  <%= submit "Verify", class: "btn btn-primary btn-block" %>
 <% end %>
