@@ -16,8 +16,8 @@ use Mix.Config
 config :ressipy, Ressipy.Web.Endpoint,
   version: Mix.Project.config[:version],
   on_init: {Ressipy.Web.Endpoint, :load_from_system_env, []},
-  url: [host: "ressipy.com"],
-  http: [port: {:system, "PORT"}, port: {:system, "PORT"}],
+  url: [host: "new.ressipy.com"],
+  http: [port: 3663],
   root: ".",
   server: true,
   cache_static_manifest: "priv/static/cache_manifest.json"
@@ -65,4 +65,4 @@ config :phoenix, :serve_endpoints, true
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-import_config "prod.secret.exs"
+import_config "/var/apps/ressipy/prod.secret.exs"
