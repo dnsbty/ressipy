@@ -2,10 +2,8 @@ use Mix.Config
 
 config :ressipy, Ressipy.Web.Endpoint,
   version: Mix.Project.config[:version],
-  on_init: {Ressipy.Web.Endpoint, :load_from_system_env, []},
   url: [host: "new.ressipy.com"],
   http: [port: 3663],
-  root: ".",
   server: true,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
