@@ -1,0 +1,11 @@
+<h1>Verify your Identity</h1>
+<p>I just sent you a text with a 6-digit code. Enter the code when you receive it</p>
+<%= form_for @changeset, account_path(@conn, :verify), fn f -> %>
+  <label>
+    Code <%= text_input f, :code %>
+  </label>
+
+  <%= hidden_input f, :number %>
+
+  <%= submit "Start" %>
+<% end %>

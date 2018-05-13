@@ -17,6 +17,9 @@ defmodule Ressipy.Web.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", CategoryController, :index
+    get "/login", AccountController, :index
+    post "/login", AccountController, :login
+    post "/verify", AccountController, :verify
     resources "/categories", CategoryController
     resources "/ingredients", IngredientController
     resources "/recipes", RecipeController
