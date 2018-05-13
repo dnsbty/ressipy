@@ -1,0 +1,65 @@
+# Elixir CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-elixir/ for more details
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    docker:
+      - image: circleci/elixir:1.6
+        environment:
+          MIX_ENV: test
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_USER: postgres
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix local.rebar
+      - run: mix deps.get
+      - run: mix test
+  deploy:
+    working_directory: ~/app
+    docker:
+      - image: circleci/elixir:1.6
+        environment:
+          MIX_ENV: prod
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix local.rebar
+      - run:
+          name: Install rsync
+          command: sudo apt-get update -qq && sudo apt-get install -y ssh rsync openssl
+      - run:
+          name: Get Mix dependencies
+          command: mix deps.get
+      - run:
+          name: Compile App
+          command: mix compile
+      - run:
+          name: Digest Frontend
+          command: |
+            MIX_ENV=prod mix phx.digest;
+      - run:
+          name: Build App release
+          command: mix release --env=prod
+      - deploy:
+          name: Deploy to Production
+          command: |
+            ssh-keyscan -H $APP_HOST >> ~/.ssh/known_hosts;
+            rsync -ravhz --stats --progress ./_build/prod/rel/$APP_NAME $APP_USER@$APP_HOST:apps;
+      - deploy:
+          name: Start the app in Production
+          command: ./.circleci/post-deploy.sh
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      # - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
