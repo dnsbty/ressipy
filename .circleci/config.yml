@@ -29,9 +29,6 @@ jobs:
       - run: mix local.hex --force
       - run: mix local.rebar
       - run:
-          name: Install rsync
-          command: sudo apt-get update -qq && sudo apt-get install -y ssh rsync openssl
-      - run:
           name: Get Mix dependencies
           command: mix deps.get
       - run:
