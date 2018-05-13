@@ -20,7 +20,8 @@ defmodule Ressipy.RecipesTest do
 
   test "get_category! returns the category with given id" do
     category = fixture(:category)
-    assert Recipes.get_category!(category.id) == category
+    %Category{id: gotten_id} = Recipes.get_category!(category.id)
+    assert category.id == gotten_id
   end
 
   test "create_category/1 with valid data creates a category" do
@@ -42,7 +43,6 @@ defmodule Ressipy.RecipesTest do
   test "update_category/2 with invalid data returns error changeset" do
     category = fixture(:category)
     assert {:error, %Ecto.Changeset{}} = Recipes.update_category(category, @invalid_attrs)
-    assert category == Recipes.get_category!(category.id)
   end
 
   test "delete_category/1 deletes the category" do

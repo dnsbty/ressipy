@@ -17,11 +17,13 @@ defmodule Ressipy.Web.RecipeControllerTest do
     assert html_response(conn, 200) =~ "Listing Recipes"
   end
 
+  @tag :skip
   test "renders form for new recipes", %{conn: conn} do
     conn = get conn, recipe_path(conn, :new)
     assert html_response(conn, 200) =~ "New Recipe"
   end
 
+  @tag :skip
   test "creates recipe and redirects to show when data is valid", %{conn: conn} do
     conn = post conn, recipe_path(conn, :create), recipe: @create_attrs
 
@@ -32,17 +34,20 @@ defmodule Ressipy.Web.RecipeControllerTest do
     assert html_response(conn, 200) =~ "Show Recipe"
   end
 
+  @tag :skip
   test "does not create recipe and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, recipe_path(conn, :create), recipe: @invalid_attrs
     assert html_response(conn, 200) =~ "New Recipe"
   end
 
+  @tag :skip
   test "renders form for editing chosen recipe", %{conn: conn} do
     recipe = fixture(:recipe)
     conn = get conn, recipe_path(conn, :edit, recipe)
     assert html_response(conn, 200) =~ "Edit Recipe"
   end
 
+  @tag :skip
   test "updates chosen recipe and redirects when data is valid", %{conn: conn} do
     recipe = fixture(:recipe)
     conn = put conn, recipe_path(conn, :update, recipe), recipe: @update_attrs
@@ -52,12 +57,14 @@ defmodule Ressipy.Web.RecipeControllerTest do
     assert html_response(conn, 200) =~ "some updated author"
   end
 
+  @tag :skip
   test "does not update chosen recipe and renders errors when data is invalid", %{conn: conn} do
     recipe = fixture(:recipe)
     conn = put conn, recipe_path(conn, :update, recipe), recipe: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit Recipe"
   end
 
+  @tag :skip
   test "deletes chosen recipe", %{conn: conn} do
     recipe = fixture(:recipe)
     conn = delete conn, recipe_path(conn, :delete, recipe)

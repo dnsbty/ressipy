@@ -29,7 +29,6 @@ defmodule Ressipy.Web.RecipeController do
         |> put_flash(:info, "Recipe created successfully.")
         |> redirect(to: recipe_path(conn, :show, recipe))
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset)
         categories = Recipes.list_categories()
         render(conn, "new.html", changeset: changeset, categories: categories)
     end

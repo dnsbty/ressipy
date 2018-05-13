@@ -13,8 +13,9 @@ defmodule Ressipy.Web.CategoryControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
+    category = fixture(:category)
     conn = get conn, category_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing Categories"
+    assert html_response(conn, 200) =~ category.name
   end
 
   test "renders form for new categories", %{conn: conn} do
@@ -29,7 +30,7 @@ defmodule Ressipy.Web.CategoryControllerTest do
     assert redirected_to(conn) == category_path(conn, :show, id)
 
     conn = get conn, category_path(conn, :show, id)
-    assert html_response(conn, 200) =~ "Show Category"
+    assert html_response(conn, 200) =~ @create_attrs[:name]
   end
 
   test "does not create category and renders errors when data is invalid", %{conn: conn} do
