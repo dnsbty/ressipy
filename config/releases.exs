@@ -19,7 +19,6 @@ secret_key_base =
     """
 
 config :ressipy, RessipyWeb.Endpoint,
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   http: [
     port: String.to_integer(System.get_env("PORT") || "4000"),
     transport_options: [socket_opts: [:inet6]]
