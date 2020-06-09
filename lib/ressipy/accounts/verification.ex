@@ -14,8 +14,8 @@ defmodule Ressipy.Accounts.Verification do
 
   @primary_key false
   embedded_schema do
-    field :code, :string
-    field :number, :string
+    field(:code, :string)
+    field(:number, :string)
   end
 
   @spec changeset(struct :: map, params :: map) :: Ecto.Changeset.t()

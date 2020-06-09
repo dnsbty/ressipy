@@ -3,9 +3,9 @@ defmodule Ressipy.Recipes.Category do
   alias Ressipy.Recipes
 
   schema "categories" do
-    field :name, :string
+    field(:name, :string)
 
-    has_many :recipes, Recipes.Recipe
+    has_many(:recipes, Recipes.Recipe)
 
     timestamps()
   end

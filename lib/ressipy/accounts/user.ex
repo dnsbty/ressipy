@@ -12,9 +12,9 @@ defmodule Ressipy.Accounts.User do
   ]
 
   schema "users" do
-    field :first_name, :string
-    field :last_name, :string
-    field :phone, :string
+    field(:first_name, :string)
+    field(:last_name, :string)
+    field(:phone, :string)
 
     timestamps()
   end

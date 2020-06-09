@@ -10,7 +10,7 @@ defmodule Ressipy.Accounts.Phone do
   ]
 
   embedded_schema do
-    field :number, :string
+    field(:number, :string)
   end
 
   @spec changeset(user :: map, attrs :: map) :: Ecto.Changeset.t()

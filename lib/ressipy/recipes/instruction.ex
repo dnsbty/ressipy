@@ -3,10 +3,10 @@ defmodule Ressipy.Recipes.Instruction do
   alias Ressipy.Recipes.Recipe
 
   schema "instructions" do
-    field :order, :integer
-    field :text, :string
+    field(:order, :integer)
+    field(:text, :string)
 
-    belongs_to :recipe, Recipe
+    belongs_to(:recipe, Recipe)
 
     timestamps()
   end
