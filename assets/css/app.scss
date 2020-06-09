@@ -1,0 +1,106 @@
+/* This file is for your main application css. */
+@import './phoenix.css';
+
+/* Alerts and form errors */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert p {
+  margin-bottom: 0;
+}
+.alert:empty {
+  display: none;
+}
+
+h2.title {
+  font-size: 0.8em;
+  font-weight: 300;
+  color: #666;
+  margin: 0;
+  padding: 0.8em;
+  border-bottom: 1px solid #eee;
+}
+
+.header {
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  font-size: 2.2em;
+  font-weight: 400;
+  margin: 0.6em 0;
+}
+
+.logo > a {
+  color: #e74c3c;
+}
+
+.logo > a:hover {
+  color: #c0392b;
+  text-decoration: none;
+}
+
+.btn-new {
+  position: absolute;
+  top: 1.31928571em;
+  right: 1.07142857em;
+}
+
+ul,
+ol {
+  padding-left: 2em;
+}
+
+@media (min-width: 768px) {
+  .btn-new {
+    postion: inherit;
+    top: inherit;
+    right: inherit;
+    margin-top: 20px;
+  }
+}
+
+/* Styles for the categories page */
+
+ul.categories {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 1.4em;
+}
+
+ul.categories > li {
+  border-bottom: 1px solid #eee;
+}
+
+ul.categories > li:hover {
+  background-color: #fafafa;
+}
+
+ul.categories > li > a {
+  display: block;
+  width: 100%;
+  padding: 1em 0;
+}
+
+ul.categories > li > a {
+  text-decoration: none;
+}

@@ -1,6 +1,0 @@
-<h2>Edit Instruction</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: instruction_path(@conn, :update, @instruction) %>
-
-<span><%= link "Back", to: instruction_path(@conn, :index) %></span>

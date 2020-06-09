@@ -8,7 +8,7 @@ defmodule Ressipy.Accounts.User do
   @fields [
     :first_name,
     :last_name,
-    :phone,
+    :phone
   ]
 
   schema "users" do
@@ -29,6 +29,7 @@ defmodule Ressipy.Accounts.User do
 
   def format_phone(changeset) do
     number = get_field(changeset, :phone) || ""
+
     case Accounts.format_phone(number) do
       nil -> add_error(changeset, :phone, @phone_error_message)
       formatted -> put_change(changeset, :phone, formatted)

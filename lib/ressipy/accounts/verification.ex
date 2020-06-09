@@ -1,6 +1,7 @@
 defmodule Ressipy.Accounts.Verification do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Ressipy.SmsVerification
 
   @fields [
     :code,
@@ -17,7 +18,7 @@ defmodule Ressipy.Accounts.Verification do
     field :number, :string
   end
 
-  @spec changeset(struct :: map, params :: map) :: Ecto.Changeset.t
+  @spec changeset(struct :: map, params :: map) :: Ecto.Changeset.t()
   def changeset(struct, params) do
     struct
     |> cast(params, @fields)
@@ -27,15 +28,16 @@ defmodule Ressipy.Accounts.Verification do
     |> verify_code()
   end
 
-  @spec phone_number(changeset :: Ecto.Changeset.t) :: String.t
+  @spec phone_number(changeset :: Ecto.Changeset.t()) :: String.t()
   def phone_number(changeset) do
     changeset
     |> apply_changes()
     |> Map.get(:number)
   end
 
-  @spec verify_code(changeset :: Ecto.Changeset.t) :: Ecto.Changeset.t
+  @spec verify_code(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp verify_code(%{valid?: false} = changeset), do: changeset
+
   defp verify_code(changeset) do
     phone = get_field(changeset, :number)
     code = get_field(changeset, :code)

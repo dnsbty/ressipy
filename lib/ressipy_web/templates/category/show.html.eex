@@ -1,0 +1,15 @@
+<h2 class="title"><%= link "Categories", to: Routes.category_path(@conn, :index) %> &gt; <%= @category.name %></h2>
+
+<ul class="recipes">
+<%= for recipe <- @category.recipes do %>
+  <li>
+    <%= link recipe.name, to: Routes.recipe_path(@conn, :show, recipe) %>
+    <div class="recipe-actions">
+      <span><%= link "Edit", to: Routes.recipe_path(@conn, :edit, recipe), class: "btn btn-default btn-xs" %></span>
+      <span><%= link "Delete", to: Routes.recipe_path(@conn, :delete, recipe), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+    </div>
+  </li>
+<% end %>
+</ul>
+
+<%= link "New Recipe", to: Routes.recipe_path(@conn, :new, category: @category), class: "btn btn-default btn-new" %>

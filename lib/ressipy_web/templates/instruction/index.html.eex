@@ -1,0 +1,28 @@
+<h2>Listing Instructions</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Text</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for instruction <- @instructions do %>
+    <tr>
+      <td><%= instruction.order %></td>
+      <td><%= instruction.text %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: Routes.instruction_path(@conn, :show, instruction), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: Routes.instruction_path(@conn, :edit, instruction), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: Routes.instruction_path(@conn, :delete, instruction), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Instruction", to: Routes.instruction_path(@conn, :new) %></span>

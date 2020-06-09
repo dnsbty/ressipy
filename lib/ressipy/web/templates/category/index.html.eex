@@ -1,9 +1,0 @@
-<ul class="categories">
-<%= for category <- @categories do %>
-  <li>
-    <%= link category.name, to: category_path(@conn, :show, category) %>
-  </li>
-<% end %>
-</ul>
-
-<%= link "New Category", to: category_path(@conn, :new), class: "btn btn-default btn-new" %>

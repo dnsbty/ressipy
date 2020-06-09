@@ -1,0 +1,17 @@
+<h1>Login</h1>
+<%= form_for @changeset, Routes.account_path(@conn, :login), fn f -> %>
+  <div class="form-group">
+    <%= label f, :number, "Phone Number", class: "control-label" %>
+    <%= telephone_input f, :number, id: "phone", class: "form-control" %>
+    <%= error_tag f, :number %>
+  </div>
+
+  <%= submit "Log In", class: "btn btn-primary btn-block" %>
+<% end %>
+
+<script type="text/javascript">
+  document.getElementById('phone').addEventListener('input', function (e) {
+    var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+  });
+</script>
