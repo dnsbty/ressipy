@@ -242,7 +242,7 @@ defmodule Ressipy.Recipes do
     ingredient
     |> cast(attrs, [:amount, :order])
     |> cast_assoc(:ingredient, required: true, with: &Ressipy.Recipes.change_ingredient/2)
-    |> validate_required([:amount])
+    |> validate_required([:amount, :order])
   end
 
   alias Ressipy.Recipes.Recipe

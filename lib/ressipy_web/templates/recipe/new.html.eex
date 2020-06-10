@@ -4,4 +4,6 @@
                         categories: @categories,
                         action: Routes.recipe_path(@conn, :create) %>
 
-<span><%= link "Back", to: Routes.category_path(@conn, :show, @changeset.data.category_id) %></span>
+<%= if !is_nil(@changeset.data.category_id) do %>
+  <span><%= link "Back", to: Routes.category_path(@conn, :show, @changeset.data.category_id) %></span>
+<% end %>

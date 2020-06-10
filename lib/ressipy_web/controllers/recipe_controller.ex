@@ -66,7 +66,8 @@ defmodule RessipyWeb.RecipeController do
         |> redirect(to: Routes.recipe_path(conn, :show, recipe))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", recipe: recipe, changeset: changeset)
+        categories = Recipes.list_categories()
+        render(conn, "edit.html", recipe: recipe, categories: categories, changeset: changeset)
     end
   end
 

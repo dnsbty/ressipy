@@ -38,6 +38,7 @@
           <%= text_input j, :amount, class: "form-control" %>
           <%= error_tag j, :amount %>
         </div>
+        <%= hidden_input j, :order, value: j.index + 1 %>
         <%= inputs_for j, :ingredient, fn g -> %>
         <div class="form-group col-xs-9">
           <%= hidden_input g, :id %>

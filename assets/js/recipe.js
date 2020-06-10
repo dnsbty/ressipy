@@ -1,12 +1,12 @@
 /* recipe.js */
 
 let Recipe = {
-  addIngredient: function(){
+  addIngredient: function() {
     let container = document.getElementById('ingredientsContainer');
     let key = container.getElementsByClassName('row').length;
 
     let row = document.createElement('div');
-    row.className = "row";
+    row.className = 'row';
 
     let amountContainer = document.createElement('div');
     amountContainer.className = 'form-group col-xs-3';
@@ -23,6 +23,13 @@ let Recipe = {
     amountInput.name = `recipe[ingredients][${key}][amount]`;
     amountInput.type = 'text';
     amountContainer.appendChild(amountInput);
+
+    let orderElement = document.createElement('input');
+    orderElement.id = `recipe_ingredients_${key}_order`;
+    orderElement.name = `recipe[ingredients][${key}][order]`;
+    orderElement.type = 'hidden';
+    orderElement.value = key + 1;
+    amountInput.append(orderElement);
 
     let nameContainer = document.createElement('div');
     nameContainer.className = 'form-group col-xs-9';
@@ -75,6 +82,6 @@ let Recipe = {
     inputGroup.appendChild(addon);
     inputGroup.appendChild(input);
     container.appendChild(formGroup);
-  }
-}
+  },
+};
 export default Recipe;
