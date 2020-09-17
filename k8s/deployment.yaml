@@ -1,0 +1,84 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ressipy
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-algorithm: "least_connections"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "b9214462-8156-4174-a8c1-3e64b6fbd598"
+    service.beta.kubernetes.io/do-loadbalancer-enable-backend-keepalive: "true"
+    service.beta.kubernetes.io/do-loadbalancer-protocol: "http"
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
+    service.beta.kubernetes.io/do-loadbalancer-tls-ports: "443"
+  labels:
+    app: ressipy
+spec:
+  type: LoadBalancer
+  selector:
+    app: ressipy
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 4000
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 4000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ressipy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ressipy
+  template:
+    metadata:
+      labels:
+        app: ressipy
+    spec:
+      containers:
+        - name: ressipy
+          image: registry.digitalocean.com/dnsbty/ressipy
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 2
+            periodSeconds: 3
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: NODE_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: ressipy
+                  key: cookie
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ressipy
+                  key: databaseUrl
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: ressipy
+                  key: secretKeyBase
+            - name: MESSAGE_BIRD_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ressipy
+                  key: messageBirdAccessKey
+            - name: DEFAULT_PHONE_NUMBER
+              valueFrom:
+                secretKeyRef:
+                  name: ressipy
+                  key: defaultPhoneNumber

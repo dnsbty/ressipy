@@ -26,3 +26,21 @@ config :ressipy, RessipyWeb.Endpoint,
   secret_key_base: secret_key_base
 
 config :ressipy, RessipyWeb.Endpoint, server: true
+
+message_bird_access_key =
+  System.get_env("MESSAGE_BIRD_ACCESS_KEY") ||
+    raise """
+    environment variable MESSAGE_BIRD_ACCESS_KEY is missing.
+    You can get this from the MessageBird dashboard.
+    """
+
+config :ressipy, message_bird_access_key: message_bird_access_key
+
+default_phone_number =
+  System.get_env("DEFAULT_PHONE_NUMBER") ||
+    raise """
+    environment variable DEFAULT_PHONE_NUMBER is missing.
+    You can get this from the MessageBird dashboard.
+    """
+
+config :ressipy, default_phone_number: default_phone_number

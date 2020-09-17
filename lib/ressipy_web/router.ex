@@ -14,6 +14,12 @@ defmodule RessipyWeb.Router do
   end
 
   scope "/", RessipyWeb do
+    pipe_through :api
+
+    get "/health", HealthController, :index
+  end
+
+  scope "/", RessipyWeb do
     pipe_through :browser
 
     get "/", CategoryController, :index
