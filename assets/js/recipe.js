@@ -44,7 +44,7 @@ let Recipe = {
     nameInput.className = 'form-control';
     nameInput.id = `recipe_ingredients_${key}_ingredient_name`;
     nameInput.name = `recipe[ingredients][${key}][ingredient][name]`;
-    nameInput.htmlType = 'text';
+    nameInput.Type = 'text';
     nameContainer.appendChild(nameInput);
 
     row.appendChild(amountContainer);
@@ -77,7 +77,7 @@ let Recipe = {
     input.className = 'form-control';
     input.id = `recipe_instructions_${key}_text`;
     input.name = `recipe[instructions][${key}][text]`;
-    input.htmlType = 'text';
+    input.Type = 'text';
 
     inputGroup.appendChild(addon);
     inputGroup.appendChild(input);
