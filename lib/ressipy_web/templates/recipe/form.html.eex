@@ -41,7 +41,7 @@
         <%= hidden_input j, :order, value: j.index + 1 %>
         <%= inputs_for j, :ingredient, fn g -> %>
         <div class="form-group col-xs-9">
-          <%= hidden_input g, :id %>
+          <%= if has_id?(g), do: hidden_input g, :id %>
           <%= label g, :name, class: "control-label" %>
           <%= text_input g, :name, class: "form-control" %>
           <%= error_tag g, :name %>
@@ -56,7 +56,7 @@
   <div id="instructionsContainer">
     <%= inputs_for f, :instructions, fn s -> %>
       <div class="form-group">
-        <%= hidden_input s, :id %>
+        <%= if has_id?(s), do: hidden_input s, :id %>
         <%= hidden_input s, :order, value: s.index + 1 %>
         <div class="input-group">
           <span class="input-group-addon"><%= s.index + 1 %></span>
