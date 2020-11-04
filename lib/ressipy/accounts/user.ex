@@ -23,6 +23,8 @@ defmodule Ressipy.Accounts.User do
     user
     |> cast(attrs, @fields)
     |> validate_required(@fields)
+    |> validate_length(:first_name, max: 255)
+    |> validate_length(:last_name, max: 255)
     |> format_phone()
     |> unique_constraint(:phone, name: :users_phone_index)
   end

@@ -60,7 +60,7 @@ defmodule Ressipy.Recipes do
   """
   def create_category(attrs \\ %{}) do
     %Category{}
-    |> category_changeset(attrs)
+    |> Category.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -78,7 +78,7 @@ defmodule Ressipy.Recipes do
   """
   def update_category(%Category{} = category, attrs) do
     category
-    |> category_changeset(attrs)
+    |> Category.changeset(attrs)
     |> Repo.update()
   end
 
@@ -108,13 +108,7 @@ defmodule Ressipy.Recipes do
 
   """
   def change_category(%Category{} = category) do
-    category_changeset(category, %{})
-  end
-
-  defp category_changeset(%Category{} = category, attrs) do
-    category
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    Category.changeset(category, %{})
   end
 
   alias Ressipy.Recipes.Ingredient
@@ -162,7 +156,7 @@ defmodule Ressipy.Recipes do
   """
   def create_ingredient(attrs \\ %{}) do
     %Ingredient{}
-    |> ingredient_changeset(attrs)
+    |> Ingredient.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -180,7 +174,7 @@ defmodule Ressipy.Recipes do
   """
   def update_ingredient(%Ingredient{} = ingredient, attrs) do
     ingredient
-    |> ingredient_changeset(attrs)
+    |> Ingredient.changeset(attrs)
     |> Repo.update()
   end
 
@@ -214,13 +208,7 @@ defmodule Ressipy.Recipes do
   end
 
   def change_ingredient(%Ingredient{} = ingredient, attrs) do
-    ingredient_changeset(ingredient, attrs)
-  end
-
-  defp ingredient_changeset(%Ingredient{} = ingredient, attrs) do
-    ingredient
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    Ingredient.changeset(ingredient, attrs)
   end
 
   alias Ressipy.Recipes.RecipeIngredient
@@ -235,14 +223,7 @@ defmodule Ressipy.Recipes do
 
   """
   def change_recipe_ingredient(%RecipeIngredient{} = ingredient, attrs) do
-    recipe_ingredient_changeset(ingredient, attrs)
-  end
-
-  defp recipe_ingredient_changeset(%RecipeIngredient{} = ingredient, attrs) do
-    ingredient
-    |> cast(attrs, [:amount, :order])
-    |> cast_assoc(:ingredient, required: true, with: &Ressipy.Recipes.change_ingredient/2)
-    |> validate_required([:amount, :order])
+    RecipeIngredient.changeset(ingredient, attrs)
   end
 
   alias Ressipy.Recipes.Recipe
@@ -312,7 +293,7 @@ defmodule Ressipy.Recipes do
   """
   def create_recipe(attrs \\ %{}) do
     %Recipe{}
-    |> recipe_changeset(attrs)
+    |> Recipe.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -330,7 +311,7 @@ defmodule Ressipy.Recipes do
   """
   def update_recipe(%Recipe{} = recipe, attrs) do
     recipe
-    |> recipe_changeset(attrs)
+    |> Recipe.changeset(attrs)
     |> Repo.update()
   end
 
@@ -360,15 +341,7 @@ defmodule Ressipy.Recipes do
 
   """
   def change_recipe(%Recipe{} = recipe, attrs \\ %{}) do
-    recipe_changeset(recipe, attrs)
-  end
-
-  defp recipe_changeset(%Recipe{} = recipe, attrs) do
-    recipe
-    |> cast(attrs, [:name, :author, :default_image, :category_id])
-    |> cast_assoc(:instructions, required: true, with: &change_instruction/2)
-    |> cast_assoc(:ingredients, required: true, with: &change_recipe_ingredient/2)
-    |> validate_required([:name, :category_id])
+    Recipe.changeset(recipe, attrs)
   end
 
   alias Ressipy.Recipes.Instruction
@@ -416,7 +389,7 @@ defmodule Ressipy.Recipes do
   """
   def create_instruction(attrs \\ %{}) do
     %Instruction{}
-    |> instruction_changeset(attrs)
+    |> Instruction.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -434,7 +407,7 @@ defmodule Ressipy.Recipes do
   """
   def update_instruction(%Instruction{} = instruction, attrs) do
     instruction
-    |> instruction_changeset(attrs)
+    |> Instruction.changeset(attrs)
     |> Repo.update()
   end
 
@@ -468,12 +441,6 @@ defmodule Ressipy.Recipes do
   end
 
   def change_instruction(%Instruction{} = instruction, attrs) do
-    instruction_changeset(instruction, attrs)
-  end
-
-  defp instruction_changeset(%Instruction{} = instruction, attrs) do
-    instruction
-    |> cast(attrs, [:order, :text])
-    |> validate_required([:order, :text])
+    Instruction.changeset(instruction, attrs)
   end
 end
