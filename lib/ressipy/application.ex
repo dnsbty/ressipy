@@ -10,21 +10,18 @@ defmodule Ressipy.Application do
       Ressipy.SmsVerification.start()
     end
 
-    children = [
-      # Start the Ecto repository
-      Ressipy.Repo,
-      # Start the Telemetry supervisor
-      RessipyWeb.Telemetry,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: Ressipy.PubSub},
-      # Start the Endpoint (http/https)
-      RessipyWeb.Endpoint
-      # Start a worker by calling: Ressipy.Worker.start_link(arg)
-      # {Ressipy.Worker, arg}
-    ]
+    children =
+      if Application.get_env(:ressipy, :database_only, false) do
+        [Ressipy.Repo]
+      else
+        [
+          Ressipy.Repo,
+          RessipyWeb.Telemetry,
+          {Phoenix.PubSub, name: Ressipy.PubSub},
+          RessipyWeb.Endpoint
+        ]
+      end
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Ressipy.Supervisor]
     Supervisor.start_link(children, opts)
   end

@@ -1,0 +1,38 @@
+---
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: ressipy-migrator
+spec:
+  template:
+    metadata:
+      labels:
+        app: ressipy-migrator
+    spec:
+      containers:
+      - name: ressipy-migrator
+        image: registry.digitalocean.com/dnsbty/ressipy
+        command: ["/app/bin/ressipy",  "eval", "Ressipy.Release.migrate"]
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: ressipy
+                key: databaseUrl
+          - name: DEFAULT_PHONE_NUMBER
+            valueFrom:
+              secretKeyRef:
+                name: ressipy
+                key: defaultPhoneNumber
+          - name: MESSAGE_BIRD_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: ressipy
+                key: messageBirdAccessKey
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: ressipy
+                key: secretKeyBase
+      restartPolicy: Never
+  backoffLimit: 4
