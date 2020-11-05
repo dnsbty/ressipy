@@ -35,6 +35,8 @@ defmodule RessipyWeb.Endpoint do
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :ressipy
   end
 
+  plug Uinta.Plug, ignored_paths: ["/health"]
+
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",
     cookie_key: "request_logger"
