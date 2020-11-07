@@ -35,7 +35,7 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save dnsbty-k8s
 
       - name: Run database migrations
-        run: ./bin/migrate.sh
+        run: ./bin/migrate.sh $(echo $GITHUB_SHA | head -c7)
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl set image deployments/ressipy ressipy=${REGISTRY_URL}:$(echo $GITHUB_SHA | head -c7)
