@@ -13,20 +13,16 @@ defmodule RessipyWeb.RecipeController do
   def new(conn, params) do
     categories = Recipes.list_categories()
 
-    changeset =
-      %Recipes.Recipe{
-        category_id: params["category"],
-        ingredients: [
-          %Recipes.RecipeIngredient{
-            order: 1,
-            ingredient: %Recipes.Ingredient{}
-          }
-        ],
-        instructions: [%Recipes.Instruction{order: 1}]
-      }
-      |> Recipes.change_recipe()
+    selected_category =
+      case params["category"] do
+        nil -> nil
+        category -> Enum.find(categories, &(&1.slug == category))
+      end
 
-    render(conn, "new.html", changeset: changeset, categories: categories)
+    changeset = Recipes.empty_recipe(selected_category)
+
+    assigns = [changeset: changeset, categories: categories, selected_category: selected_category]
+    render(conn, "new.html", assigns)
   end
 
   def create(conn, %{"recipe" => recipe_params}) do
@@ -36,7 +32,7 @@ defmodule RessipyWeb.RecipeController do
       {:ok, recipe} ->
         conn
         |> put_flash(:info, "Recipe created successfully.")
-        |> redirect(to: Routes.recipe_path(conn, :show, recipe))
+        |> redirect(to: Routes.recipe_path(conn, :show, recipe.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         categories = Recipes.list_categories()
@@ -44,20 +40,20 @@ defmodule RessipyWeb.RecipeController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    recipe = Recipes.get_recipe!(id)
+  def show(conn, %{"slug" => slug}) do
+    recipe = Recipes.get_recipe!(slug)
     render(conn, "show.html", recipe: recipe)
   end
 
-  def edit(conn, %{"id" => id}) do
-    recipe = Recipes.get_recipe!(id)
+  def edit(conn, %{"slug" => slug}) do
+    recipe = Recipes.get_recipe!(slug)
     categories = Recipes.list_categories()
     changeset = Recipes.change_recipe(recipe)
     render(conn, "edit.html", recipe: recipe, categories: categories, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "recipe" => recipe_params}) do
-    recipe = Recipes.get_recipe!(id)
+  def update(conn, %{"slug" => slug, "recipe" => recipe_params}) do
+    recipe = Recipes.get_recipe!(slug)
 
     case Recipes.update_recipe(recipe, recipe_params) do
       {:ok, recipe} ->
@@ -71,8 +67,8 @@ defmodule RessipyWeb.RecipeController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    recipe = Recipes.get_recipe!(id)
+  def delete(conn, %{"slug" => slug}) do
+    recipe = Recipes.get_recipe!(slug)
     {:ok, _recipe} = Recipes.delete_recipe(recipe)
 
     conn

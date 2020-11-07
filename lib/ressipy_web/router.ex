@@ -27,10 +27,20 @@ defmodule RessipyWeb.Router do
     post "/login", AccountController, :login
     get "/logout", AccountController, :logout
     post "/verify", AccountController, :verify
-    resources "/categories", CategoryController
-    resources "/ingredients", IngredientController
-    resources "/recipes", RecipeController
-    resources "/instructions", InstructionController
+
+    post "/categories", CategoryController, :create
+    get "/categories/new", CategoryController, :new
+    get "/categories/:slug", CategoryController, :show
+    get "/categories/:slug/edit", CategoryController, :edit
+    put "/categories/:slug", CategoryController, :update
+    delete "/categories/:slug", CategoryController, :delete
+
+    post "/recipes", RecipeController, :create
+    get "/recipes/new", RecipeController, :new
+    get "/recipes/:slug", RecipeController, :show
+    get "/recipes/:slug/edit", RecipeController, :edit
+    put "/recipes/:slug", RecipeController, :update
+    delete "/recipes/:slug", RecipeController, :delete
   end
 
   if Mix.env() in [:dev, :test] do

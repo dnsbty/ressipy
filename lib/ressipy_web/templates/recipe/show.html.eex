@@ -15,5 +15,5 @@
 <% end %>
 </ol>
 
-<%= link "Edit Recipe", to: Routes.recipe_path(@conn, :edit, @recipe), class: "btn btn-default btn-new" %>
-<%= link "Back", to: Routes.category_path(@conn, :show, @recipe.category), class: "btn btn-default" %>
+<%= link "Edit Recipe", to: Routes.recipe_path(@conn, :edit, @recipe.slug), class: "btn btn-default btn-new" %>
+<%= link "Back", to: Routes.category_path(@conn, :show, @recipe.category.slug), class: "btn btn-default" %>

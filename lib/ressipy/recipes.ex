@@ -6,7 +6,13 @@ defmodule Ressipy.Recipes do
   import Ecto.{Query, Changeset}, warn: false
   alias Ressipy.Repo
 
-  alias Ressipy.Recipes.Category
+  alias Ressipy.Recipes.{
+    Category,
+    Ingredient,
+    Instruction,
+    Recipe,
+    RecipeIngredient
+  }
 
   @doc """
   Returns the list of categories.
@@ -28,14 +34,14 @@ defmodule Ressipy.Recipes do
 
   ## Examples
 
-      iex> get_category!(123)
+      iex> get_category!("main-dishes")
       %Category{}
 
-      iex> get_category!(456)
+      iex> get_category!("abcd")
       ** (Ecto.NoResultsError)
 
   """
-  def get_category!(id) do
+  def get_category!(slug) do
     query =
       from(c in Category,
         left_join: r in assoc(c, :recipes),
@@ -43,7 +49,7 @@ defmodule Ressipy.Recipes do
         order_by: r.name
       )
 
-    Repo.get!(query, id)
+    Repo.get_by!(query, slug: slug)
   end
 
   @doc """
@@ -110,8 +116,6 @@ defmodule Ressipy.Recipes do
   def change_category(%Category{} = category) do
     Category.changeset(category, %{})
   end
-
-  alias Ressipy.Recipes.Ingredient
 
   @doc """
   Returns the list of ingredients.
@@ -211,8 +215,6 @@ defmodule Ressipy.Recipes do
     Ingredient.changeset(ingredient, attrs)
   end
 
-  alias Ressipy.Recipes.RecipeIngredient
-
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking recipe ingredient changes.
 
@@ -225,8 +227,6 @@ defmodule Ressipy.Recipes do
   def change_recipe_ingredient(%RecipeIngredient{} = ingredient, attrs) do
     RecipeIngredient.changeset(ingredient, attrs)
   end
-
-  alias Ressipy.Recipes.Recipe
 
   @doc """
   Returns the list of recipes.
@@ -254,14 +254,14 @@ defmodule Ressipy.Recipes do
 
   ## Examples
 
-      iex> get_recipe!(123)
+      iex> get_recipe!("chicken-parmesan")
       %Recipe{}
 
-      iex> get_recipe!(456)
+      iex> get_recipe!("cake")
       ** (Ecto.NoResultsError)
 
   """
-  def get_recipe!(id) do
+  def get_recipe!(slug) do
     query =
       from(r in Recipe,
         left_join: c in assoc(r, :category),
@@ -276,7 +276,7 @@ defmodule Ressipy.Recipes do
         order_by: [j.order, s.order]
       )
 
-    Repo.get!(query, id)
+    Repo.get_by!(query, slug: slug)
   end
 
   @doc """
@@ -344,7 +344,31 @@ defmodule Ressipy.Recipes do
     Recipe.changeset(recipe, attrs)
   end
 
-  alias Ressipy.Recipes.Instruction
+  @doc """
+  Returns an `%Ecto.Changeset{}` representing a brand new empty recipe.
+
+  ## Examples
+
+      iex> empty_recipe()
+      %Ecto.Changeset{source: %Recipe{}}
+  """
+  @spec empty_recipe(Category.t() | nil) :: Ecto.Changeset.t()
+  def empty_recipe(category \\ nil) do
+    category_id = if category, do: category.id, else: nil
+
+    recipe = %Recipe{
+      category_id: category_id,
+      ingredients: [
+        %RecipeIngredient{
+          order: 1,
+          ingredient: %Ingredient{}
+        }
+      ],
+      instructions: [%Instruction{order: 1}]
+    }
+
+    change_recipe(recipe)
+  end
 
   @doc """
   Returns the list of instructions.

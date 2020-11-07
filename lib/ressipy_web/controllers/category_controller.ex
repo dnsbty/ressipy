@@ -20,26 +20,26 @@ defmodule RessipyWeb.CategoryController do
       {:ok, category} ->
         conn
         |> put_flash(:info, "Category created successfully.")
-        |> redirect(to: Routes.category_path(conn, :show, category))
+        |> redirect(to: Routes.category_path(conn, :show, category.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    category = Recipes.get_category!(id)
+  def show(conn, %{"slug" => slug}) do
+    category = Recipes.get_category!(slug)
     render(conn, "show.html", category: category)
   end
 
-  def edit(conn, %{"id" => id}) do
-    category = Recipes.get_category!(id)
+  def edit(conn, %{"slug" => slug}) do
+    category = Recipes.get_category!(slug)
     changeset = Recipes.change_category(category)
     render(conn, "edit.html", category: category, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "category" => category_params}) do
-    category = Recipes.get_category!(id)
+  def update(conn, %{"slug" => slug, "category" => category_params}) do
+    category = Recipes.get_category!(slug)
 
     case Recipes.update_category(category, category_params) do
       {:ok, category} ->
@@ -52,8 +52,8 @@ defmodule RessipyWeb.CategoryController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    category = Recipes.get_category!(id)
+  def delete(conn, %{"slug" => slug}) do
+    category = Recipes.get_category!(slug)
     {:ok, _category} = Recipes.delete_category(category)
 
     conn

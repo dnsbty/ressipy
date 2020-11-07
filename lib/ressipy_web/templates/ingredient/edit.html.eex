@@ -1,6 +1,0 @@
-<h2>Edit Ingredient</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: Routes.ingredient_path(@conn, :update, @ingredient) %>
-
-<span><%= link "Back", to: Routes.ingredient_path(@conn, :index) %></span>
