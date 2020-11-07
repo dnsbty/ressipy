@@ -73,6 +73,6 @@ defmodule RessipyWeb.RecipeController do
 
     conn
     |> put_flash(:info, "Recipe deleted successfully.")
-    |> redirect(to: Routes.recipe_path(conn, :index))
+    |> redirect(to: Routes.category_path(conn, :show, recipe.category.slug))
   end
 end

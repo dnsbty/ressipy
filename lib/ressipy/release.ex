@@ -14,30 +14,7 @@ defmodule Ressipy.Release do
   ```
   """
 
-  alias Ressipy.{Recipes, Repo, Util}
-  alias Ressipy.Recipes.Recipe
-  import Ecto.Query
-
   @app :ressipy
-
-  @doc """
-  Backfill slugs for categories so that they can be used in URLs instead of IDs.
-  """
-  @spec backfill_slugs :: :ok
-  def backfill_slugs do
-    for category <- Recipes.list_categories() do
-      slug = Util.slugify(category.name)
-      Recipes.update_category(category, %{slug: slug})
-    end
-
-    for recipe <- Recipes.list_recipes() do
-      slug = Util.slugify(recipe.name)
-      recipe_id = recipe.id
-
-      query = from(r in Recipe, where: r.id == ^recipe_id)
-      Repo.update_all(query, set: [slug: slug])
-    end
-  end
 
   @doc """
   Runs the database migrations.
