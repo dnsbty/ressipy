@@ -45,7 +45,7 @@ defmodule RessipyWeb.CategoryController do
       {:ok, category} ->
         conn
         |> put_flash(:info, "Category updated successfully.")
-        |> redirect(to: Routes.category_path(conn, :show, category))
+        |> redirect(to: Routes.category_path(conn, :show, category.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", category: category, changeset: changeset)

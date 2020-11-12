@@ -59,7 +59,7 @@ defmodule RessipyWeb.RecipeController do
       {:ok, recipe} ->
         conn
         |> put_flash(:info, "Recipe updated successfully.")
-        |> redirect(to: Routes.recipe_path(conn, :show, recipe))
+        |> redirect(to: Routes.recipe_path(conn, :show, recipe.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         categories = Recipes.list_categories()
