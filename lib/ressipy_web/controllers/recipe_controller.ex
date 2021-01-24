@@ -21,7 +21,13 @@ defmodule RessipyWeb.RecipeController do
 
     changeset = Recipes.empty_recipe(selected_category)
 
-    assigns = [changeset: changeset, categories: categories, selected_category: selected_category]
+    assigns = [
+      changeset: changeset,
+      categories: categories,
+      selected_category: selected_category,
+      title: "Create recipe"
+    ]
+
     render(conn, "new.html", assigns)
   end
 
@@ -36,20 +42,33 @@ defmodule RessipyWeb.RecipeController do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         categories = Recipes.list_categories()
-        render(conn, "new.html", changeset: changeset, categories: categories)
+
+        render(conn, "new.html",
+          changeset: changeset,
+          categories: categories,
+          title: "Create recipe"
+        )
     end
   end
 
   def show(conn, %{"slug" => slug}) do
     recipe = Recipes.get_recipe!(slug)
-    render(conn, "show.html", recipe: recipe)
+    render(conn, "show.html", recipe: recipe, title: recipe.name)
   end
 
   def edit(conn, %{"slug" => slug}) do
     recipe = Recipes.get_recipe!(slug)
     categories = Recipes.list_categories()
     changeset = Recipes.change_recipe(recipe)
-    render(conn, "edit.html", recipe: recipe, categories: categories, changeset: changeset)
+
+    assigns = [
+      recipe: recipe,
+      categories: categories,
+      changeset: changeset,
+      title: "Edit #{recipe.name}"
+    ]
+
+    render(conn, "edit.html", assigns)
   end
 
   def update(conn, %{"slug" => slug, "recipe" => recipe_params}) do
@@ -63,7 +82,15 @@ defmodule RessipyWeb.RecipeController do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         categories = Recipes.list_categories()
-        render(conn, "edit.html", recipe: recipe, categories: categories, changeset: changeset)
+
+        assigns = [
+          recipe: recipe,
+          categories: categories,
+          changeset: changeset,
+          title: "Edit #{recipe.name}"
+        ]
+
+        render(conn, "edit.html", assigns)
     end
   end
 

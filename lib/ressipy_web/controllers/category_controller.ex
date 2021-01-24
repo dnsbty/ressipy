@@ -12,7 +12,7 @@ defmodule RessipyWeb.CategoryController do
 
   def new(conn, _params) do
     changeset = Recipes.change_category(%Recipes.Category{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, title: "Create category")
   end
 
   def create(conn, %{"category" => category_params}) do
@@ -23,19 +23,20 @@ defmodule RessipyWeb.CategoryController do
         |> redirect(to: Routes.category_path(conn, :show, category.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, title: "Create category")
     end
   end
 
   def show(conn, %{"slug" => slug}) do
     category = Recipes.get_category!(slug)
-    render(conn, "show.html", category: category)
+    render(conn, "show.html", category: category, title: category.name)
   end
 
   def edit(conn, %{"slug" => slug}) do
     category = Recipes.get_category!(slug)
     changeset = Recipes.change_category(category)
-    render(conn, "edit.html", category: category, changeset: changeset)
+    title = "Edit #{category.name}"
+    render(conn, "edit.html", category: category, changeset: changeset, title: title)
   end
 
   def update(conn, %{"slug" => slug, "category" => category_params}) do
@@ -48,7 +49,8 @@ defmodule RessipyWeb.CategoryController do
         |> redirect(to: Routes.category_path(conn, :show, category.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", category: category, changeset: changeset)
+        title = "Edit #{category.name}"
+        render(conn, "edit.html", category: category, changeset: changeset, title: title)
     end
   end
 
