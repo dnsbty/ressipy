@@ -11,7 +11,8 @@ spec:
     spec:
       containers:
       - name: ressipy-migrator
-        image: registry.digitalocean.com/dnsbty/ressipy:{{IMAGE_TAG}}
+        image: registry.digitalocean.com/dnsbty/ressipy:latest
+        imagePullPolicy: Always
         command: ["/app/bin/ressipy",  "eval", "Ressipy.Release.migrate"]
         env:
           - name: DATABASE_URL

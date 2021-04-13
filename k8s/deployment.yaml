@@ -42,7 +42,8 @@ spec:
     spec:
       containers:
         - name: ressipy
-          image: registry.digitalocean.com/dnsbty/ressipy
+          image: registry.digitalocean.com/dnsbty/ressipy:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 4000
               protocol: TCP
